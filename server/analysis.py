@@ -124,3 +124,15 @@ print("3D geometries created:", len(valid_3d), "/", len(roads))
 # Verify Z exists (third coord)
 first = valid_3d.iloc[0]
 print("First 3D coord sample:", list(first.coords)[0])
+
+
+# Create a 3D Output Layer
+os.makedirs("output", exist_ok=True)
+
+# keep only ONE geometry column for export 
+roads_3d_gdf = roads.dropna(subset=["geom_3d"]).copy() 
+roads_3d_gdf = roads_3d_gdf.drop(columns=["geom"], errors="ignore")   # drop the original geometry 
+roads_3d_gdf = roads_3d_gdf.set_geometry("geom_3d") 
+
+roads_3d_gdf.to_file("output/roads_3d.geojson", driver="GeoJSON") 
+print("Saved: output/roads_3d.geojson")
