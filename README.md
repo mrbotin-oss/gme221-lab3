@@ -20,6 +20,9 @@
 # Reflection : C. Hybrid IO Milestone
 - A hybrid GIS workflow combines libraries like rasterio, psycopg2, and GeoPandas to mirror the way GIS is stored and processed. Most of the time, DEM loaded from a raster file while vector file like road are queried from a PostGIS database. Since rasters are often very large, so it does not benefit storing it in a database. While, vectors work better in database for efficient querying since they usually have many attributes and relational connections, which databases handle better than flat files. This hybrid workflow are architectured for performance, scalability, and data management. No spatial analysis is yet occuring at this stage as we only load spatial data using tow different storage model, Vector data (roads) stored in PostGIS and Raster data (DEM) stored as a GeoTIFF file.
 
+# Reflection : D.  3D Geometry Construction Milestone 
+- Densification is necessary before sampling elevation. The problem without densification, is that road geometries contain few vertices, so if the road only has two vertices, the DEM only gives two values, so the elevation in between the road are never sampled. Densification means adding extra vertices along a line before sampling elevation. DEM and road must use the same coordinate system, so CRS alignment must happen before sampling. When a sampling function tries to read the elevation data of the DEM but its corresponding location of the road falls outside the coordinates of DEM, no data will be given. If our road and DEM uses different coordinate systems and are not aligned, they may appear far apart, even if they represent the same location that makes the map confusing and can lead to wrong interpretations. Z values in geometry mean each road vertex now contains elevation that makes it a 3D geometry.
+
 
 
 
