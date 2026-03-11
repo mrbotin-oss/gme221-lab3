@@ -9,7 +9,7 @@
 
 # How to Run
 1. Activate the virtual environment
-2. Run the py to retrieved vector data from a relational spatial database and raster data is loaded from a grid-based file format (.tiff) that are now represented internally in Python 
+2. Run the py to retrieved vector data from a relational spatial database and raster data is loaded from a grid-based file format (.tiff) that are now represented internally in Python. 
 3. Run the py to constructs LineString geometries whose coordinates include a Z value (x, y, z). Z is derived by sampling elevation values from a DEM raster.
 
 # Output
@@ -23,6 +23,12 @@
 # Reflection : D.  3D Geometry Construction Milestone 
 - Densification is necessary before sampling elevation. The problem without densification, is that road geometries contain few vertices, so if the road only has two vertices, the DEM only gives two values, so the elevation in between the road are never sampled. Densification means adding extra vertices along a line before sampling elevation. DEM and road must use the same coordinate system, so CRS alignment must happen before sampling. When a sampling function tries to read the elevation data of the DEM but its corresponding location of the road falls outside the coordinates of DEM, no data will be given. If our road and DEM uses different coordinate systems and are not aligned, they may appear far apart, even if they represent the same location that makes the map confusing and can lead to wrong interpretations. Z values in geometry mean each road vertex now contains elevation that makes it a 3D geometry.
 
+# Required Questions
+1. Since we exported a 3D geometry to GeoJSON, the coordinate structure (X and Y) is preserved including the Z, which is the elevation. (X, Y, Z)
+2. Because GeoJSON lacks a specific LineStringZ geometry type, it cannot formally indicate that a geometry is intended to be three-dimensional. 
+3. GeoJSON labeling a geometry as LineString even when Z values exist shows that data standards define the structure and naming of data, while data content can include additional information that is not explicitly recognized by the format’s specification.
+4. Visualization shows that the geometry is raised or lowered in 3D space, but it still behaves like a 2D feature with height. In QGIS 3D View, GeoJSON geometries with Z values are visualized using elevation, but they are typically interpreted as 2.5D representations rather than true 3D geometries, because the GeoJSON standard does not formally define fully three-dimensional geometry types. 
+5. Formats like GeoPackage and PostGIS are useful for GIS data storage and analysis, while CityGML and IFC emphasize detailed semantic structures. For web visualization and scalable distribution, 3D Tiles with glTF pipelines provide efficient rendering and streaming of large 3D datasets. Choosing among these options depends on whether the priority is analysis, semantic richness, interoperability, or visualization performance.
 
 
 
